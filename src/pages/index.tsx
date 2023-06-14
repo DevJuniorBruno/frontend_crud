@@ -2,6 +2,7 @@ import Link from "next/link";
 import api from '../services/api';
 import { useEffect, useState, FormEvent, useContext } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
+import Head from "next/head";
 
 interface Data {
   id:string;
@@ -10,14 +11,15 @@ interface Data {
 
 export default function Dashboard(){
 
-  const { createCurso, deleteCurso} = useContext(AuthContext)
+  
+
+  const { createCurso, deleteCurso, editCurso, setEditCursoId} = useContext(AuthContext)
 
   const [name, setName] = useState("")
+  const [itemId, setItemId] = useState("")
   const[data, setData] = useState<Data[]>([]);
   const[loading, setLoading] = useState(true);
-  const [ buttonId, setButtonId] = useState("")
-
-
+  
   useEffect(()=>{
 
     async function loadApi(){
@@ -36,11 +38,18 @@ export default function Dashboard(){
   async function handleAddCurso(event: FormEvent<HTMLFormElement>){
     event.preventDefault();
     let dataSubmit = {
-      name
+      name    
     }
+
+    if(itemId){
+      await editCurso({name, id:itemId})
+
+
+    }else{
+      await createCurso(dataSubmit)
+    }
+
     
-    await createCurso(dataSubmit)
-      console.log(name)
   }
 
   async function handleRmCurso(id:string){
@@ -52,31 +61,53 @@ export default function Dashboard(){
 
   }
 
+  async function handleEditCurso(id:string, name:string){
+
+    setEditCursoId(id)
+    setName(name)
+    setItemId(id)
+
+
+    console.log(id, name)
+  }
+
+
     if(loading){
 
       return(
+
+        
         <div>
+           <Head>
+            <title>TODO LIST</title>
+          </Head>
           <h2>carregando filmes</h2>
         </div>
       )
 
     }
       return(
+
+        
         <div>
+
+          <Head>
+            <title>TODO LIST</title>
+          </Head>
 
           <h2>Home Page</h2>
 
           <form onSubmit={handleAddCurso} >
             <input 
               placeholder="Digite seu curso"
+              value={name}
+              
               onChange={(e)=> setName(e.target.value)}
+
               >
             </input>
 
-            <button>
-              Add
-            </button>
-
+            <button>{itemId ? "Atualizar" : "Add"}</button>
           </form>
   
             {data.map(item=>{
@@ -85,7 +116,11 @@ export default function Dashboard(){
                 <article key={item.id}>
 
                 <strong>{item.name} </strong>
-                <button onClick={()=> handleRmCurso(item.id)}>Excluir</button>
+
+                <button onClick={()=> handleEditCurso(item.id, item.name)} >Edit</button>
+
+
+                <button onClick={()=> handleRmCurso(item.id)}>Delete</button>
 
                 </article>
 

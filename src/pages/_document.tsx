@@ -5,9 +5,7 @@ export default function Document() {
     <Html lang="en">
        
       <Head>
-        <link rel='icon' href='/assets/favicon.ico' /> 
-
-        <title>TO DO LIST</title>
+        <link rel='icon' href='/assets/favicon.ico' />
       </Head>
 
       <body>
