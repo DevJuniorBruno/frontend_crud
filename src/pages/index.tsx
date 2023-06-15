@@ -54,7 +54,7 @@ export default function Dashboard(){
            <Head>
             <title>TODO LIST</title>
           </Head>
-          <h2>carregando filmes</h2>
+          <h2>carregando tarefas</h2>
         </div>
       )
     }
