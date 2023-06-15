@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai';
 import api from '../services/api';
 import { useEffect, useState, FormEvent, useContext } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
@@ -73,7 +73,7 @@ export default function Dashboard(){
                   onChange={(e)=> setName(e.target.value)}
                   >
                 </input>
-                <button>{itemId ? "Atualizar" : "Add"}</button>
+                <button>{itemId ? <AiFillEdit /> : <AiOutlinePlus />}</button>
               </form>
           </div>
             {data.map(item=>{
@@ -81,8 +81,8 @@ export default function Dashboard(){
                 <article className={styles.list}  key={item.id}>
                 <strong>{item.name} </strong>
                 <div>
-                <button onClick={()=> handleEditCurso(item.id, item.name)} >Edit</button>
-                <button onClick={()=> handleRmCurso(item.id)}>Delete</button>
+                <button onClick={()=> handleEditCurso(item.id, item.name)} ><AiFillEdit/></button>
+                <button onClick={()=> handleRmCurso(item.id)}><AiFillDelete/></button>
                 </div>
                 </article>
               )
